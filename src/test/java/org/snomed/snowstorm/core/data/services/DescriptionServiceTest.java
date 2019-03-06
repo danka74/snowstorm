@@ -51,25 +51,37 @@ public class DescriptionServiceTest extends AbstractTest {
 
 	@Test
 	public void testDescriptionSearch() throws ServiceException {
-		testUtil.createConceptWithPathIdAndTerms("MAIN", "100001", "Heart");
-		testUtil.createConceptWithPathIdAndTerms("MAIN", "100002", "Lung");
+		testUtil.createConceptWithPathIdAndTerms("MAIN", "100001", "Hjärta");
+		testUtil.createConceptWithPathIdAndTerms("MAIN", "100002", "Laségues test");
 		testUtil.createConceptWithPathIdAndTerms("MAIN", "100006", "Foot cramps");
 		testUtil.createConceptWithPathIdAndTerms("MAIN", "100007", "Foot cramp");
 		testUtil.createConceptWithPathIdAndTerms("MAIN", "100003", "Foot bone");
 		testUtil.createConceptWithPathIdAndTerms("MAIN", "100004", "Foot");
 		testUtil.createConceptWithPathIdAndTerms("MAIN", "100005", "Footwear");
 
-		List<Description> content = descriptionService.findDescriptionsWithAggregations("MAIN", "Foo cr", ServiceTestUtil.PAGE_REQUEST).getContent();
+		List<Description> content = descriptionService.findDescriptionsWithAggregations("MAIN", "Hjarta", ServiceTestUtil.PAGE_REQUEST).getContent();
 		List<String> actualTerms = content.stream().map(Description::getTerm).collect(Collectors.toList());
-		assertEquals(Lists.newArrayList("Foot cramp", "Foot cramps"), actualTerms);
-
-		content = descriptionService.findDescriptionsWithAggregations("MAIN", "Foo", ServiceTestUtil.PAGE_REQUEST).getContent();
+		assert(actualTerms.size() == 0);
+		
+		content = descriptionService.findDescriptionsWithAggregations("MAIN", "Hjärta", ServiceTestUtil.PAGE_REQUEST).getContent();
 		actualTerms = content.stream().map(Description::getTerm).collect(Collectors.toList());
-		assertEquals(Lists.newArrayList("Foot", "Footwear", "Foot bone", "Foot cramp", "Foot cramps"), actualTerms);
-
-		content = descriptionService.findDescriptionsWithAggregations("MAIN", "cramps", ServiceTestUtil.PAGE_REQUEST).getContent();
+		assertEquals(Lists.newArrayList("Hjärta"), actualTerms);
+		
+		content = descriptionService.findDescriptionsWithAggregations("MAIN", "Lasegues", ServiceTestUtil.PAGE_REQUEST).getContent();
 		actualTerms = content.stream().map(Description::getTerm).collect(Collectors.toList());
-		assertEquals(Lists.newArrayList("Foot cramps"), actualTerms);
+		assert(actualTerms.size() == 1);
+		
+//		List<Description> content = descriptionService.findDescriptionsWithAggregations("MAIN", "Foo cr", ServiceTestUtil.PAGE_REQUEST).getContent();
+//		List<String> actualTerms = content.stream().map(Description::getTerm).collect(Collectors.toList());
+//		assertEquals(Lists.newArrayList("Foot cramp", "Foot cramps"), actualTerms);
+//
+//		content = descriptionService.findDescriptionsWithAggregations("MAIN", "Foo", ServiceTestUtil.PAGE_REQUEST).getContent();
+//		actualTerms = content.stream().map(Description::getTerm).collect(Collectors.toList());
+//		assertEquals(Lists.newArrayList("Foot", "Footwear", "Foot bone", "Foot cramp", "Foot cramps"), actualTerms);
+//
+//		content = descriptionService.findDescriptionsWithAggregations("MAIN", "cramps", ServiceTestUtil.PAGE_REQUEST).getContent();
+//		actualTerms = content.stream().map(Description::getTerm).collect(Collectors.toList());
+//		assertEquals(Lists.newArrayList("Foot cramps"), actualTerms);
 	}
 
 	@Test

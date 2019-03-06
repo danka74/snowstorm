@@ -8,6 +8,7 @@ import org.snomed.snowstorm.rest.View;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,6 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Document(indexName = "es-description", type = "description", shards = 8)
+@Setting(settingPath = "/elasticsearch/swedish-analyzer.json")
 public class Description extends SnomedComponent<Description> implements SnomedComponentWithInactivationIndicator, SnomedComponentWithAssociations {
 
 	public interface Fields extends SnomedComponent.Fields {
@@ -37,7 +39,7 @@ public class Description extends SnomedComponent<Description> implements SnomedC
 	private String descriptionId;
 
 	@JsonView(value = View.Component.class)
-	@Field(type = FieldType.text, analyzer = "swedish")
+	@Field(type = FieldType.text, analyzer = "swedish_analyzer")
 	@NotNull
 	private String term;
 

@@ -38,6 +38,7 @@ public class TestConfig extends Config {
 					.withStartTimeout(30, TimeUnit.SECONDS)
 					.withSetting(PopularProperties.CLUSTER_NAME, clusterName)
 					.withSetting(PopularProperties.HTTP_PORT, port)
+					.withPlugin("analysis-icu")
 					.build()
 					.start()
 					.deleteIndices();
