@@ -35,6 +35,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 import static org.snomed.snowstorm.core.data.services.BranchMetadataHelper.INTERNAL_METADATA_KEY;
@@ -205,7 +206,7 @@ public class BranchController {
 			xAuthToken = xAuthToken.substring(0, xAuthToken.indexOf("=") + 4) + "...";
 			LOGGER.info("xAuthToken is present: {}", xAuthToken);
 		} else {
-			LOGGER.info("xAuthToken is not present. mergeBranch 208.");
+			LOGGER.info("xAuthToken is not present. mergeBranch 209.");
 		}
 
 		String Cookie = httpServletRequest.getHeader("Cookie");
@@ -213,9 +214,15 @@ public class BranchController {
 			Cookie = Cookie.substring(0, Cookie.indexOf("=") + 4) + "...";
 			LOGGER.info("Cookie is present: {}", Cookie);
 		} else {
-			LOGGER.info("Cookie is not present. mergeBranch 216.");
+			LOGGER.info("Cookie is not present. mergeBranch 217.");
 		}
-		SnowstormApplication.debugAuth("mergeBranch 218");
+
+		for (Enumeration<?> e = httpServletRequest.getHeaderNames(); e.hasMoreElements(); ) {
+			String nextHeaderName = (String) e.nextElement();
+			LOGGER.info("HttpServletRequest: nextHeaderName: " + nextHeaderName + " 222");
+		}
+
+		SnowstormApplication.debugAuth("mergeBranch 225");
 		BranchMergeJob mergeJob = branchMergeService.mergeBranchAsync(mergeRequest);
 		return ControllerHelper.getCreatedResponse(mergeJob.getId());
 	}
