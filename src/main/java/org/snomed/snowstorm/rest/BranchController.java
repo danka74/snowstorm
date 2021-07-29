@@ -200,14 +200,22 @@ public class BranchController {
 	@RequestMapping(value = "/merges", method = RequestMethod.POST)
 	@PreAuthorize("hasPermission('AUTHOR', #mergeRequest.target)")
 	public ResponseEntity<Void> mergeBranch(@RequestBody MergeRequest mergeRequest, HttpServletRequest httpServletRequest) {
-		String header = httpServletRequest.getHeader("X-AUTH-token");
-		if (header != null) {
-			header = header.substring(0, header.indexOf("=") + 4) + "...";
-			LOGGER.info("Token is present: {}", header);
+		String xAuthToken = httpServletRequest.getHeader("X-AUTH-token");
+		if (xAuthToken != null) {
+			xAuthToken = xAuthToken.substring(0, xAuthToken.indexOf("=") + 4) + "...";
+			LOGGER.info("xAuthToken is present: {}", xAuthToken);
 		} else {
-			LOGGER.info("Token is not present. mergeBranch 208.");
+			LOGGER.info("xAuthToken is not present. mergeBranch 208.");
 		}
-		SnowstormApplication.debugAuth("mergeBranch 210");
+
+		String Cookie = httpServletRequest.getHeader("Cookie");
+		if (Cookie != null) {
+			Cookie = Cookie.substring(0, Cookie.indexOf("=") + 4) + "...";
+			LOGGER.info("Cookie is present: {}", Cookie);
+		} else {
+			LOGGER.info("Cookie is not present. mergeBranch 216.");
+		}
+		SnowstormApplication.debugAuth("mergeBranch 218");
 		BranchMergeJob mergeJob = branchMergeService.mergeBranchAsync(mergeRequest);
 		return ControllerHelper.getCreatedResponse(mergeJob.getId());
 	}
