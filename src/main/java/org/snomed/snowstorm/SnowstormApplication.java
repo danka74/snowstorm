@@ -22,6 +22,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.io.File;
@@ -56,6 +59,21 @@ public class SnowstormApplication extends Config implements ApplicationRunner {
 	private CodeSystemVersionService codeSystemVersionService;
 
 	private static final Logger logger = LoggerFactory.getLogger(SnowstormApplication.class);
+
+	public static void debugAuth(String location) {
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		if (securityContext != null) {
+			Authentication authentication = securityContext.getAuthentication();
+			if (authentication != null) {
+				logger.info("Authentication is present. Location: {}", location);
+				logger.info("Name: {}. Location: {}", authentication.getName(), location);
+			} else {
+				logger.info("Authentication is not present. Location: {}", location);
+			}
+		} else {
+			logger.info("SecurityContext is not present. Location: {}", location);
+		}
+	}
 
 	public static void main(String[] args) {
 		System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true"); // Swagger encodes the slash in branch paths

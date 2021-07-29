@@ -13,6 +13,7 @@ import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.ihtsdo.sso.integration.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.snomed.snowstorm.SnowstormApplication;
 import org.snomed.snowstorm.core.data.domain.*;
 import org.snomed.snowstorm.core.data.domain.review.MergeReview;
 import org.snomed.snowstorm.core.data.domain.review.ReviewStatus;
@@ -139,6 +140,7 @@ public class BranchMergeService {
 		} else {
 			logger.info("authenticationToken present. 140");
 		}
+		SnowstormApplication.debugAuth("mergeBranchAsync 143");
 		executorService.submit(() -> {
 			// Bring user security context into new thread
 			SecurityContextHolder.setContext(securityContext);
@@ -147,6 +149,7 @@ public class BranchMergeService {
 			} else {
 				logger.info("authenticationToken present. 148");
 			}
+			SnowstormApplication.debugAuth("mergeBranchAsync 152");
 			try {
 				if (mergeReview != null) {
 					branchReviewService.applyMergeReview(mergeReview);

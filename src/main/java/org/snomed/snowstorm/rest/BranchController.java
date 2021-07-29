@@ -8,6 +8,7 @@ import io.kaicode.rest.util.branchpathrewrite.BranchPathUriUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.snomed.snowstorm.SnowstormApplication;
 import org.snomed.snowstorm.config.Config;
 import org.snomed.snowstorm.core.data.domain.BranchMergeJob;
 import org.snomed.snowstorm.core.data.domain.Concept;
@@ -193,12 +194,14 @@ public class BranchController {
 	@RequestMapping(value = "/merges", method = RequestMethod.POST)
 	@PreAuthorize("hasPermission('AUTHOR', #mergeRequest.target)")
 	public ResponseEntity<Void> mergeBranch(@RequestBody MergeRequest mergeRequest) {
+		SnowstormApplication.debugAuth("mergeBranch 200");
 		BranchMergeJob mergeJob = branchMergeService.mergeBranchAsync(mergeRequest);
 		return ControllerHelper.getCreatedResponse(mergeJob.getId());
 	}
 
 	@RequestMapping(value = "/merges/{mergeId}", method = RequestMethod.GET)
 	public BranchMergeJob retrieveMerge(@PathVariable String mergeId) {
+		SnowstormApplication.debugAuth("mergeBranch 207");
 		return branchMergeService.getBranchMergeJobOrThrow(mergeId);
 	}
 
