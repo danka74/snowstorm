@@ -44,11 +44,6 @@ public class RequestHeaderAuthenticationDecoratorWithRequiredRole extends OncePe
 			return;
 		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (SecurityUtil.getAuthenticationToken() == null) {
-			logger.info("authenticationToken is null. 48.");
-		} else {
-			logger.info("authenticationToken present. 50");
-		}
 		if (authentication instanceof PreAuthenticatedAuthenticationToken) {
 			// IMS filter in use
 			List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());

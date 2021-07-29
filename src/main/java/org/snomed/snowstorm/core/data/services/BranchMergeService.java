@@ -134,13 +134,18 @@ public class BranchMergeService {
 		mergeJob.setStatus(JobStatus.IN_PROGRESS);
 		branchMergeJobRepository.save(mergeJob);
 		final SecurityContext securityContext = SecurityContextHolder.getContext();
+		if (SecurityUtil.getAuthenticationToken() == null) {
+			logger.info("authenticationToken is null. 138.");
+		} else {
+			logger.info("authenticationToken present. 140");
+		}
 		executorService.submit(() -> {
 			// Bring user security context into new thread
 			SecurityContextHolder.setContext(securityContext);
 			if (SecurityUtil.getAuthenticationToken() == null) {
-				logger.info("authenticationToken is null. 142.");
+				logger.info("authenticationToken is null. 146.");
 			} else {
-				logger.info("authenticationToken present. 143");
+				logger.info("authenticationToken present. 148");
 			}
 			try {
 				if (mergeReview != null) {
