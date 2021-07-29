@@ -13,6 +13,7 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
+import org.ihtsdo.sso.integration.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snomed.snowstorm.core.data.domain.*;
@@ -31,7 +32,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -170,6 +170,11 @@ public class BranchReviewService {
 
 	public void applyMergeReview(MergeReview mergeReview) throws ServiceException {
 		assertMergeReviewCurrent(mergeReview);
+		if (SecurityUtil.getAuthenticationToken() == null) {
+			logger.info("authenticationToken is null. 175.");
+		} else {
+			logger.info("authenticationToken present. 177");
+		}
 
 		// Check all conflicts manually merged
 		List<ManuallyMergedConcept> manuallyMergedConcepts = manuallyMergedConceptRepository.findByMergeReviewId(mergeReview.getId(), LARGE_PAGE).getContent();

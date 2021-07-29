@@ -10,6 +10,7 @@ import io.kaicode.elasticvc.repositories.BranchRepository;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.ihtsdo.sso.integration.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snomed.snowstorm.core.data.domain.*;
@@ -136,6 +137,11 @@ public class BranchMergeService {
 		executorService.submit(() -> {
 			// Bring user security context into new thread
 			SecurityContextHolder.setContext(securityContext);
+			if (SecurityUtil.getAuthenticationToken() == null) {
+				logger.info("authenticationToken is null. 142.");
+			} else {
+				logger.info("authenticationToken present. 143");
+			}
 			try {
 				if (mergeReview != null) {
 					branchReviewService.applyMergeReview(mergeReview);
@@ -166,6 +172,11 @@ public class BranchMergeService {
 	}
 
 	public void mergeBranchSync(String source, String target, Collection<Concept> manuallyMergedConcepts) throws ServiceException {
+		if (SecurityUtil.getAuthenticationToken() == null) {
+			logger.info("authenticationToken is null. 176.");
+		} else {
+			logger.info("authenticationToken present. 178");
+		}
 		logger.info("Request merge {} -> {}", source, target);
 		final Branch sourceBranch = branchService.findBranchOrThrow(source);
 		final Branch targetBranch = branchService.findBranchOrThrow(target);
