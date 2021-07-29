@@ -8,6 +8,8 @@ import io.kaicode.rest.util.branchpathrewrite.BranchPathUriUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snomed.snowstorm.SnowstormApplication;
 import org.snomed.snowstorm.config.Config;
 import org.snomed.snowstorm.core.data.domain.BranchMergeJob;
@@ -28,9 +30,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import static org.snomed.snowstorm.core.data.services.BranchMetadataHelper.INTERNAL_METADATA_KEY;
 
@@ -38,6 +43,7 @@ import static org.snomed.snowstorm.core.data.services.BranchMetadataHelper.INTER
 @Api(tags = "Branching", description = "-")
 @RequestMapping(produces = "application/json")
 public class BranchController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(BranchController.class);
 
 	@Autowired
 	private BranchService branchService;
@@ -193,8 +199,15 @@ public class BranchController {
 			notes = "The integrity-check endpoint should be used before performing a promotion to avoid promotion errors.")
 	@RequestMapping(value = "/merges", method = RequestMethod.POST)
 	@PreAuthorize("hasPermission('AUTHOR', #mergeRequest.target)")
-	public ResponseEntity<Void> mergeBranch(@RequestBody MergeRequest mergeRequest) {
-		SnowstormApplication.debugAuth("mergeBranch 200");
+	public ResponseEntity<Void> mergeBranch(@RequestBody MergeRequest mergeRequest, HttpServletRequest httpServletRequest) {
+		String header = httpServletRequest.getHeader("X-AUTH-token");
+		if (header != null) {
+			header = header.substring(0, header.indexOf("=") + 4) + "...";
+			LOGGER.info("Token is present: {}", header);
+		} else {
+			LOGGER.info("Token is not present. mergeBranch 208.");
+		}
+		SnowstormApplication.debugAuth("mergeBranch 210");
 		BranchMergeJob mergeJob = branchMergeService.mergeBranchAsync(mergeRequest);
 		return ControllerHelper.getCreatedResponse(mergeJob.getId());
 	}
