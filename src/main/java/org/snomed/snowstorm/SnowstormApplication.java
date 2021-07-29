@@ -67,6 +67,12 @@ public class SnowstormApplication extends Config implements ApplicationRunner {
 			if (authentication != null) {
 				logger.info("Authentication is present. Location: {}", location);
 				logger.info("Name: {}. Location: {}", authentication.getName(), location);
+				Object credentials = authentication.getCredentials();
+				if (credentials == null) {
+					logger.info("Credentials not present. Location: {}", location);
+				} else {
+					logger.info("Credentials present. Location: {}", location);
+				}
 			} else {
 				logger.info("Authentication is not present. Location: {}", location);
 			}
