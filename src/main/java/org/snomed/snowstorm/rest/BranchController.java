@@ -30,6 +30,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -201,6 +202,24 @@ public class BranchController {
 	@RequestMapping(value = "/merges", method = RequestMethod.POST)
 	@PreAuthorize("hasPermission('AUTHOR', #mergeRequest.target)")
 	public ResponseEntity<Void> mergeBranch(@RequestBody MergeRequest mergeRequest, HttpServletRequest httpServletRequest) {
+		Cookie[] cookies = httpServletRequest.getCookies();
+		for (Cookie cookie : cookies) {
+			String name = cookie.getName();
+			LOGGER.info("cookie name: {}", name);
+			if (name != null && name.equals("dev-ims-ihtsdo")) {
+				String value = cookie.getValue();
+				if (value != null && !value.isEmpty()) {
+					if (value.contains("=")) {
+						value = value.substring(0, value.indexOf("=") + 4) + "...";
+					} else {
+						value = value.substring(0, 4) + "...";
+					}
+					LOGGER.info("Value: {}", value);
+				} else {
+					LOGGER.info("Cookie value has no value.");
+				}
+			}
+		}
 		String xAuthToken = httpServletRequest.getHeader("X-AUTH-token");
 		if (xAuthToken != null) {
 			xAuthToken = xAuthToken.substring(0, xAuthToken.indexOf("=") + 4) + "...";
@@ -212,9 +231,9 @@ public class BranchController {
 		String Cookie = httpServletRequest.getHeader("Cookie");
 		if (Cookie != null) {
 			Cookie = Cookie.substring(0, Cookie.indexOf("=") + 4) + "...";
-			LOGGER.info("Cookie is present: {}", Cookie);
+			LOGGER.info("Cookie Header is present: {}", Cookie);
 		} else {
-			LOGGER.info("Cookie is not present. mergeBranch 217.");
+			LOGGER.info("Cookie Header is not present. mergeBranch 217.");
 		}
 
 		for (Enumeration<?> e = httpServletRequest.getHeaderNames(); e.hasMoreElements(); ) {
