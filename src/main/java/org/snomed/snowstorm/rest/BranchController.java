@@ -30,13 +30,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 
 import static org.snomed.snowstorm.core.data.services.BranchMetadataHelper.INTERNAL_METADATA_KEY;
@@ -202,46 +200,7 @@ public class BranchController {
 	@RequestMapping(value = "/merges", method = RequestMethod.POST)
 	@PreAuthorize("hasPermission('AUTHOR', #mergeRequest.target)")
 	public ResponseEntity<Void> mergeBranch(@RequestBody MergeRequest mergeRequest, HttpServletRequest httpServletRequest) {
-		Cookie[] cookies = httpServletRequest.getCookies();
-		for (Cookie cookie : cookies) {
-			String name = cookie.getName();
-			LOGGER.info("cookie name: {}", name);
-			if (name != null && name.equals("dev-ims-ihtsdo")) {
-				String value = cookie.getValue();
-				if (value != null && !value.isEmpty()) {
-					if (value.contains("=")) {
-						value = value.substring(0, value.indexOf("=") + 4) + "...";
-					} else {
-						value = value.substring(0, 4) + "...";
-					}
-					LOGGER.info("Value: {}", value);
-				} else {
-					LOGGER.info("Cookie value has no value.");
-				}
-			}
-		}
-		String xAuthToken = httpServletRequest.getHeader("X-AUTH-token");
-		if (xAuthToken != null) {
-			xAuthToken = xAuthToken.substring(0, xAuthToken.indexOf("=") + 4) + "...";
-			LOGGER.info("xAuthToken is present: {}", xAuthToken);
-		} else {
-			LOGGER.info("xAuthToken is not present. mergeBranch 209.");
-		}
-
-		String Cookie = httpServletRequest.getHeader("Cookie");
-		if (Cookie != null) {
-			Cookie = Cookie.substring(0, Cookie.indexOf("=") + 4) + "...";
-			LOGGER.info("Cookie Header is present: {}", Cookie);
-		} else {
-			LOGGER.info("Cookie Header is not present. mergeBranch 217.");
-		}
-
-		for (Enumeration<?> e = httpServletRequest.getHeaderNames(); e.hasMoreElements(); ) {
-			String nextHeaderName = (String) e.nextElement();
-			LOGGER.info("HttpServletRequest: nextHeaderName: " + nextHeaderName + " 222");
-		}
-
-		SnowstormApplication.debugAuth("mergeBranch 225");
+		LOGGER.info("FRI-128 mergeBranch 203");
 		BranchMergeJob mergeJob = branchMergeService.mergeBranchAsync(mergeRequest);
 		return ControllerHelper.getCreatedResponse(mergeJob.getId());
 	}
