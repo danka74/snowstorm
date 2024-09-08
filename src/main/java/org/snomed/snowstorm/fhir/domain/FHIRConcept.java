@@ -4,6 +4,10 @@ import ca.uhn.fhir.jpa.entity.TermConcept;
 import ca.uhn.fhir.jpa.entity.TermConceptDesignation;
 import ca.uhn.fhir.jpa.entity.TermConceptParentChildLink;
 import ca.uhn.fhir.jpa.entity.TermConceptProperty;
+import ca.uhn.fhir.model.api.ExtensionDt;
+import ca.uhn.fhir.model.primitive.DateTimeDt;
+import ca.uhn.fhir.model.primitive.StringDt;
+
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.snomed.snowstorm.core.data.domain.ConceptMini;
 import org.snomed.snowstorm.core.data.domain.Description;
@@ -142,6 +146,13 @@ public class FHIRConcept implements FHIRGraphNode {
 				if (description.hasAcceptability(requestedLanguageDialects)) {
 					designation.setUse(SNOMED_URI, description.getTypeId());
 				}
+
+				// add description ID, TODO: possibly controlled by additional param to $expand etc.
+				ExtensionDt ext = new ExtensionDt();
+				ext.setModifier(false);
+				ext.setUrl("http://hl7.org/fhir/StructureDefinition/coding-sctdescid");
+				ext.setValue(new StringDt(description.getId().toString()));
+
 				designations.add(designation);
 			}
 		}
