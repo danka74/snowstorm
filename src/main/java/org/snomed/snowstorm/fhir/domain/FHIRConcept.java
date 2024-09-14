@@ -144,13 +144,7 @@ public class FHIRConcept implements FHIRGraphNode {
 				if (description.hasAcceptability(requestedLanguageDialects)) {
 					designation.setUse(SNOMED_URI, description.getTypeId());
 				}
-
-				// add description ID, TODO: possibly controlled by additional param to $expand etc.
-				ExtensionDt ext = new ExtensionDt();
-				ext.setModifier(false);
-				ext.setUrl("http://hl7.org/fhir/StructureDefinition/coding-sctdescid");
-				ext.setValue(new StringDt(description.getId().toString()));
-
+				designation.setDescriptionId(description.getDescriptionId());
 				designations.add(designation);
 			}
 		}

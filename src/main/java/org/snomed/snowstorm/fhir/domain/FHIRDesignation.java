@@ -12,6 +12,8 @@ public class FHIRDesignation {
 	private String language;
 	private String use;
 	private String value;
+	private String descriptionId;
+
 
 	public FHIRDesignation() {
 	}
@@ -106,5 +108,13 @@ public class FHIRDesignation {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public String getDescriptionId() {
+		return descriptionId;
+	}
+
+	public void setDescriptionId(String descriptionId) {
+		this.descriptionId = descriptionId;
 	}
 }
