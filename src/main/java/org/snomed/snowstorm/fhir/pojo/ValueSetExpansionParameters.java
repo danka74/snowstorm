@@ -35,18 +35,19 @@ public final class ValueSetExpansionParameters {
 	private final CanonicalUri systemVersion;
 	private final CanonicalUri checkSystemVersion;
 	private final CanonicalUri forceSystemVersion;
+	private final Boolean includeDescriptionId;
 	private final String version;
 	private final ValueSet valueSet;
 
 	public ValueSetExpansionParameters(ValueSet valueSet, boolean includeDefinition1) {
 		this(null, valueSet, null, null, null, null, null, null, null, null, null,
-				null, includeDefinition1, null, null, null, null, null, null, null, null, null, null);
+				null, includeDefinition1, null, null, null, null, null, null, null, null, null, null, null);
 	}
 
 	public ValueSetExpansionParameters(String id, ValueSet valueSet, String url, String valueSetVersion, String context, String contextDirection, String filter, String date,
 			Integer offset, Integer count, Boolean includeDesignations, List<String> designations, Boolean includeDefinition, Boolean activeOnly,
 			Boolean excludeNested, Boolean excludeNotForUI, Boolean excludePostCoordinated, String displayLanguage, CanonicalUri excludeSystem, CanonicalUri systemVersion,
-			CanonicalUri checkSystemVersion, CanonicalUri forceSystemVersion, String version) {
+			CanonicalUri checkSystemVersion, CanonicalUri forceSystemVersion, Boolean includeDescriptionId, String version) {
 
 		this.id = id;
 		this.url = url;
@@ -69,6 +70,7 @@ public final class ValueSetExpansionParameters {
 		this.systemVersion = systemVersion;
 		this.checkSystemVersion = checkSystemVersion;
 		this.forceSystemVersion = forceSystemVersion;
+		this.includeDescriptionId = includeDescriptionId;
 		this.version = version;
 		this.valueSet = valueSet;
 	}
@@ -166,6 +168,10 @@ public final class ValueSetExpansionParameters {
 
 	public CanonicalUri getForceSystemVersion() {
 		return forceSystemVersion;
+	}
+
+	public Boolean getIncludeDescriptionId() {
+		return includeDescriptionId;
 	}
 
 	public String getVersion() {

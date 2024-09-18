@@ -353,7 +353,10 @@ public class FHIRValueSetService {
 							designationComponent.setValue(designation.getValue());
 
 							// add descriptionId extension
-							designationComponent.addExtension("http://hl7.org/fhir/StructureDefinition/coding-sctdescid", new StringType(designation.getDescriptionId()));
+							if (isSnomed && TRUE.equals(params.getIncludeDescriptionId())) {
+								designationComponent.addExtension("http://hl7.org/fhir/StructureDefinition/coding-sctdescid", new StringType(designation.getDescriptionId()));
+							}
+
 							component.addDesignation(designationComponent);
 						}
 					}
