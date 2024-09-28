@@ -188,6 +188,16 @@ class FHIRValueSetProviderExpandEclTest extends AbstractFHIRTest {
 	}
 
 	@Test
+	void testECLWithDescriptionIdExtension() {
+		String url = baseUrl + "/ValueSet/$expand?" +
+				"url=http://snomed.info/sct/" + sampleModuleId + "?fhir_vs=ecl/" + Concepts.SNOMEDCT_ROOT + "&count=1&includeDesignationId=true" +
+				"&_format=json";
+		ValueSet v = getValueSet(url);
+		assertEquals(1, v.getExpansion().getContains().size());
+		assertEquals("517382016", v.getExpansion().getContains().get(0).getDesignation().get(1).getExtension().get(0).getValue());
+	}
+
+	@Test
 	void testECLWithDesignationUseContextExpansion() throws JsonProcessingException {
 		String url = baseUrl + "/ValueSet/$expand?url=http://snomed.info/sct?fhir_vs=ecl/257751006&includeDesignations=true&_format=json";
 		ValueSet valueSet = getValueSet(url);
