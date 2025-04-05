@@ -3,6 +3,44 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 10.7.0 Release (January 2025)
+Maintenance release with bug fixes and general improvements.
+
+### Improvements
+- MAINT-2309 Prevent copy endpoint from modifying versioned Branch
+- PIP-575 Address CVE-2024-38816
+- PIP-584 Address CVE-2024-47072
+- PIP-583 Address CVE-2024-51132
+
+### Fixes
+- ISTO-125 Allow pagination beyond 10K for LOINC
+- ISTO-127 Improve handling of term search for LOINC
+
+## 10.6.1 Release (December 2024)
+Maintenance release with bug fix.
+
+### Fixes
+- MAINT-2699 Improve `additional-en-language-refset-delta` endpoint to support processing of duplicate ReferenceSetMembers.
+- MAINT-2691 Add 'clone' method to Annotation class to improve handling of annotations during rebase.
+
+## 10.5.0 Release (November 2024)
+Maintenance release with improvements
+### Improvements
+- MAINT-2602 Improve logging when encountering exception during CodeSystem upgrade
+- MAINT-2640 Improve logging when encountering exception interacting with Elasticsearch
+- MAINT-2667 Add French Edition to default application properties
+- MAINT-2464 Improve Snapshot import times
+
+### Fixes
+- MAINT-2665 Fix FHIR ValueSet expansion to search FSN & Synonyms, not Text Definitions
+- MAINT-2308 Fix blank assertion group names to skip validation
+- MAINT-2677 Fix bug where Semantic index was not updated when non-isa Relationships were inactivated
+
+## 10.4.3 Release (October 2024)
+Maintenance release with improvements
+### Improvements
+- MAINT-2679 Add refsets field to QueryConcept so that authoring platform can work with snowstorm-perf on the same semantic index
+
 ## 10.4.2 Release (July 2024)
 Maintenance release with bug fixes and improvements.
 ### Fixes
