@@ -55,6 +55,9 @@ public class CodeSystemUpgradeService {
 	@Autowired
 	private ExecutorService executorService;
 
+	@Autowired
+	private ModuleDependencyService moduleDependencyService;
+
 	@Value("${snowstorm.rest-api.readonly}")
 	private boolean isReadOnly;
 
@@ -186,6 +189,7 @@ public class CodeSystemUpgradeService {
 
 			if (contentAutomations) {
 				logger.info("Running upgrade content automations on {}.", branchPath);
+				moduleDependencyService.setTargetEffectiveTime(branchPath, newDependantVersion);
 				upgradeInactivationService.findAndUpdateDescriptionsInactivation(codeSystem);
 				upgradeInactivationService.findAndUpdateLanguageRefsets(codeSystem);
 				upgradeInactivationService.findAndUpdateAdditionalAxioms(codeSystem);

@@ -93,6 +93,8 @@ public abstract class Config extends ElasticsearchConfig {
 	public static final String DEFAULT_MODULE_ID_KEY = "defaultModuleId";
 	public static final String DEFAULT_NAMESPACE_KEY = "defaultNamespace";
 	public static final String EXPECTED_EXTENSION_MODULES = "expectedExtensionModules";
+	public static final String DEPENDENCY_PACKAGE = "dependencyPackage";
+	public static final String REQUIRED_LANGUAGE_REFSETS = "requiredLanguageRefsets";
 
 	@Value("${elasticsearch.index.max.terms.count}")
 	private int indexMaxTermsCount;
@@ -145,6 +147,9 @@ public abstract class Config extends ElasticsearchConfig {
 	@Autowired
 	private RefsetDescriptorUpdaterService refsetDescriptorUpdaterService;
 
+	@Autowired
+	private ReferencedConceptsLookupUpdateService refsetConceptsLookupUpdateService;
+
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@PostConstruct
@@ -157,6 +162,7 @@ public abstract class Config extends ElasticsearchConfig {
 		branchService.addCommitListener(branchClassificationStatusService);
 		branchService.addCommitListener(refsetDescriptorUpdaterService);
 		branchService.addCommitListener(integrityService);
+		branchService.addCommitListener(refsetConceptsLookupUpdateService);
 		branchService.addCommitListener(multiSearchService);
 		branchService.addCommitListener(eclPreprocessingService);
 		branchService.addCommitListener(commitServiceHookClient);
